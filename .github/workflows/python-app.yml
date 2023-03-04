@@ -1,39 +1,34 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+#main.yml
+#This workflow will install Python dependencies, lint using Black, run tests using Pytest 
+#and Deploy the FastAPI app to Heroku
+name: fastapi-github-actions-test
 
-name: Python application
+on: 
+  #Trigger the workflow on a push event to the master branch only
+  push: 
+    branches: [master]
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
-
+#A workflow job running sequentially
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    #runs-on: defines The workflow runner
+    runs-on: ubuntu-latest 
+    #steps: defines a series of tasks executed by the Job
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+    - uses: actions/checkout@v2
+    - run: |   # To fetch all history for all tags and branches
+        git fetch --prune --unshallow  
+
+    #Task for setting up Python 3.8 using actions/setup-python@v2 Github action
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
       with:
-        python-version: "3.10"
+        python-version: 3.8 # Modify python version HERE
+
+    #Task for installing dependencies, multi-line command
+    - name: Install pipenv
+      run: pip install pipenv
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv shell
         pipenv install
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: pipenv run dev
+        pipenv run dev
