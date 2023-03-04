@@ -6,7 +6,6 @@ class Hello_Controller(object):
     def __init__(cls, token: str) -> None:
         cls.token = token
 
-    @classmethod
     def sendHelloMessage(cls, name: str) -> str:
         try:
             if type(name) == "str":
@@ -14,7 +13,6 @@ class Hello_Controller(object):
         except OSError as err:
             return err
 
-    @classmethod
     def retrieve_data(cls, index: int | str) -> str:
         try:
             with Session(engine) as session:

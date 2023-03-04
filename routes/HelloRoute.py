@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from pydantic import BaseModel
+from utils.logging import Logging
 from fastapi import APIRouter, Request, Response, BackgroundTasks
 from schemas.auth_post_request import Auth_post_request
 from controllers.Hello_controller import Hello_Controller
@@ -47,12 +48,14 @@ async def testing_route(
                 return final_res
             else: 
                 return GeneralResponse(
-                success=False, 
-                error="HMAC_ERR", 
-                data=None
-            )
+                    success=False, 
+                    error="HMAC_ERR", 
+                    data=None
+                )
         else: raise Exception("")
     except OSError as error:
+        logger = Logging(error, 400)
+        logger.save_log()
         return GeneralResponse(
             success=False, 
             error=error, 
