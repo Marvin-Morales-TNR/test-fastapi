@@ -31,4 +31,5 @@ jobs:
     - name: Install dependencies
       run: |
         pipenv install
-        uvicorn main:app
+        pipenv shell
+        pipenv run dev
