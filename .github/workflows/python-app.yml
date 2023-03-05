@@ -31,5 +31,4 @@ jobs:
     - name: Install dependencies
       run: |
         pipenv install
-        pipenv shell
-        pipenv run dev
+        python3 -m uvicorn main:app
