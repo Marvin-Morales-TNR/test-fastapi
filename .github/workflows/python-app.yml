@@ -32,4 +32,4 @@ jobs:
       run: |
         pipenv shell
         pipenv install
-        pipenv run dev
+        python3 -m uvicorn main:app
